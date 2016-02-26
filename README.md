@@ -1,5 +1,7 @@
 # Chemtrails
 
+[![Build Status](https://travis-ci.com/pivotal/chemtrails.svg?token=GqmN5yv6TyjxnxsoFgEG&branch=master)](https://travis-ci.com/pivotal/chemtrails)
+
 This gem allows you to fetch the configuration for your rails app from a [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config) server. 
 
 ## Installation
