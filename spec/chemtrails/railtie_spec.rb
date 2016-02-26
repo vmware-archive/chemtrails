@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Chemtrails::Railtie do
-  describe '.startup' do
+  describe '#startup' do
     let(:fetcher) { double(fetch_configuration: {'foo' => 'bar'}) }
 
     before do
