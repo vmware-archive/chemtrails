@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'spring/cloud/config/rails/version'
+require 'chemtrails/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'spring-cloud-config-rails'
-  spec.version       = Spring::Cloud::Config::Rails::VERSION
+  spec.name          = 'chemtrails'
+  spec.version       = Chemtrails::VERSION
   spec.authors       = ['Pivotal IAD']
   spec.email         = ['iad-dev@pivotal.io']
 
-  spec.summary       = %q{spring-cloud-config is a gem that provides configuration with Spring Cloud Config.}
-  spec.description   = %q{spring-cloud-config is a gem that provides configuration with Spring Cloud Config.}
-  spec.homepage      = 'http://github.com/pivotal/spring-cloud-config'
+  spec.summary       = %q{Chemtrails is a gem that integrates with Spring Cloud Config to externalize the configuration of your Rails app.}
+  spec.description   = %q{Chemtrails is a gem that integrates with Spring Cloud Config to externalize the configuration of your Rails app.}
+  spec.homepage      = 'http://github.com/pivotal/chemtrails'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'rails', '~> 4.1.6'
+  spec.add_dependency 'excon', '~> 0.45.4'
 
   spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'rake', '~> 10.0'

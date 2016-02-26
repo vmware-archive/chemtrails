@@ -1,5 +1,5 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'spring-cloud-config-rails'
+require 'chemtrails'
 require 'webmock/rspec'
