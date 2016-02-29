@@ -1,6 +1,6 @@
 # Chemtrails
 
-[![Build Status](https://travis-ci.com/pivotal/chemtrails.svg?token=GqmN5yv6TyjxnxsoFgEG&branch=master)](https://travis-ci.com/pivotal/chemtrails)
+[![Build Status](https://travis-ci.org/pivotal/chemtrails.svg?branch=master)](https://travis-ci.org/pivotal/chemtrails)
 [![Code Climate](https://codeclimate.com/github/pivotal/chemtrails/badges/gpa.svg)](https://codeclimate.com/github/pivotal/chemtrails)
 [![Test Coverage](https://codeclimate.com/github/pivotal/chemtrails/badges/coverage.svg)](https://codeclimate.com/github/pivotal/chemtrails/coverage)
 
@@ -24,7 +24,7 @@ Or install it yourself as:
 
 ## Usage
 
-Set the location of your config server in the environment:
+Set the location and of your config server in the environment:
 
 ```
 CONFIG_SERVER_URL=http://localhost:8080
