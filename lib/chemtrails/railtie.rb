@@ -2,7 +2,7 @@ require 'rails'
 
 module Chemtrails
   class Railtie < Rails::Railtie
-    config.before_configuration { startup unless Rails.env.test? }
+    config.before_initialize { startup unless Rails.env.test? }
 
     def self.startup
       server = ENV['CONFIG_SERVER_URL']
