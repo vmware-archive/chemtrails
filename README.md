@@ -10,9 +10,7 @@ This gem allows you to fetch the configuration for your rails app from a [Spring
 
 Add this line to your application's Gemfile:
 
-```ruby
-gem 'chemtrails'
-```
+    gem 'chemtrails'
 
 And then execute:
 
@@ -22,15 +20,26 @@ Or install it yourself as:
 
     $ gem install chemtrails
 
-## Usage
+## Configuration
 
-Set the location and of your config server in the environment:
+Set the location and of your config server and any necessary credentials in the environment:
 
-```
-CONFIG_SERVER_URL=http://localhost:8080
-CONFIG_SERVER_USERNAME=username
-CONFIG_SERVER_PASSWORD=password
-```
+    CONFIG_SERVER_URL=http://localhost:8080
+    CONFIG_SERVER_USERNAME=username
+    CONFIG_SERVER_PASSWORD=password
+
+When your Rails app boots, it will fetch the configuration for the given environment from the config server and populate
+the ENV with the values it finds. It will use the application name and environment name to determine which set of values
+to fetch. For example, if the application is named `Sandwich` and is running in the `production` environment, it will fetch
+the configuration from the endpoint `$CONFIG_SERVER_URL/sandwich/production`. With Spring Cloud Config, this corresponds
+to a property source named `sandwich-production.properties`.
+
+### Deferred Configuration
+
+Chemtrails will fetch the configuration as part of a `before_initialize` block. This happens after the application and
+environment have been loaded, but before Rails initializers have run. If you depend on a ENV value from Chemtrails in an
+environment specific configuration file (e.g. production.rb), you will need to defer that configuration until the ENV
+has been loaded via an `after_initialize` block.
 
 ## License
 
