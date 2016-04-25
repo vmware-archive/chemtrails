@@ -34,13 +34,6 @@ to fetch. For example, if the application is named `Sandwich` and is running in 
 the configuration from the endpoint `$CONFIG_SERVER_URL/sandwich/production`. With Spring Cloud Config, this corresponds
 to a property source named `sandwich-production.properties`.
 
-### Deferred Configuration
-
-Chemtrails will fetch the configuration as part of a `before_initialize` block. This happens after the application and
-environment have been loaded, but before Rails initializers have run. If you depend on a ENV value from Chemtrails in an
-environment specific configuration file (e.g. production.rb), you will need to defer that configuration until the ENV
-has been loaded via an `after_initialize` block.
-
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
