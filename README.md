@@ -28,6 +28,11 @@ Set the location and of your config server and any necessary credentials in the 
     CONFIG_SERVER_USERNAME=username
     CONFIG_SERVER_PASSWORD=password
 
+You will also need to set your Rails environment and Rack environment, as these values are needed before Chemtrails is available.
+
+    RAILS_ENV={env}
+    RACK_ENV={env}
+    
 When your Rails app boots, it will fetch the configuration for the given environment from the config server and populate
 the ENV with the values it finds. It will use the application name and environment name to determine which set of values
 to fetch. For example, if the application is named `Sandwich` and is running in the `production` environment, it will fetch
