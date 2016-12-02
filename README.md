@@ -27,6 +27,12 @@ Set the location and of your config server and any necessary credentials in the 
     CONFIG_SERVER_URL=http://localhost:8080
     CONFIG_SERVER_USERNAME=username
     CONFIG_SERVER_PASSWORD=password
+    
+If you want to request values that are not on the `master` branch, you can optionally supply the branch name:
+
+    CONFIG_SERVER_BRANCH=production
+
+If this is not provided, Spring Cloud Config will return values from the `master` branch.
 
 You will also need to set your Rails environment and Rack environment, as these values are needed before Chemtrails is available.
 

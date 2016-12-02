@@ -3,8 +3,9 @@ require 'excon'
 
 module Chemtrails
   class Fetcher
-    def initialize(url, application, environment, username, password)
+    def initialize(url, application, environment, branch, username, password)
       @url = url
+      @branch = branch
       @application = application
       @environment = environment
       @username = username
@@ -12,7 +13,7 @@ module Chemtrails
     end
 
     def fetch_configuration
-      response = Excon.get("#{@url}/#{@application}/#{@environment}", headers: {
+      response = Excon.get(build_url, headers: {
         'Authorization' => "Basic #{encode_credentials(@username, @password)}"
       })
 
@@ -35,6 +36,14 @@ module Chemtrails
 
     def encode_credentials(username, password)
       Base64.encode64("#{username}:#{password}").chomp
+    end
+
+    def build_url
+      if @branch.present?
+        "#{@url}/#{@application}/#{@environment}/#{@branch}"
+      else
+        "#{@url}/#{@application}/#{@environment}"
+      end
     end
   end
 end

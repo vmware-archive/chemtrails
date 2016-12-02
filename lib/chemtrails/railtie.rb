@@ -6,9 +6,10 @@ module Chemtrails
 
     def self.startup
       server = ENV['CONFIG_SERVER_URL']
+      branch = ENV['CONFIG_SERVER_BRANCH']
       username = ENV['CONFIG_SERVER_USERNAME']
       password = ENV['CONFIG_SERVER_PASSWORD']
-      fetcher = Chemtrails::Fetcher.new(server, app_name, app_environment, username, password)
+      fetcher = Chemtrails::Fetcher.new(server, app_name, app_environment, branch, username, password)
       ENV.update(fetcher.fetch_configuration)
     end
 
