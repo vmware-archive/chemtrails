@@ -40,8 +40,36 @@ describe Chemtrails::Railtie do
     end
 
     it 'should update the environment with the configuration values' do
-      described_class.startup
-      expect(ENV.fetch('foo')).to eq('bar')
+      env = {}
+      described_class.startup('app', 'env', env)
+      expect(env.fetch('foo')).to eq('bar')
+    end
+
+    it 'should pass the correct environment variables to the fetcher' do
+      described_class.startup( 'poop', 'staging',
+          {
+            'CONFIG_SERVER_URL' => 'http://config.server',
+            'CONFIG_SERVER_BRANCH' => 'master',
+            'CONFIG_SERVER_USERNAME' => 'user',
+            'CONFIG_SERVER_PASSWORD' => 'pass'
+          }
+      )
+
+      expect(Chemtrails::Fetcher).to have_received(:new).with('http://config.server', 'poop', 'staging', 'master', 'user', 'pass')
+    end
+
+    it 'should use CONFIG_SERVER_PROFILE_ACTIVE profiles instead of the Rails env if present' do
+      described_class.startup( 'poop', 'staging',
+                               {
+                                   'CONFIG_SERVER_URL' => 'http://config.server',
+                                   'CONFIG_SERVER_BRANCH' => 'master',
+                                   'CONFIG_SERVER_USERNAME' => 'user',
+                                   'CONFIG_SERVER_PASSWORD' => 'pass',
+                                   'CONFIG_SERVER_PROFILE_ACTIVE' => 'foo,bar'
+                               }
+      )
+
+      expect(Chemtrails::Fetcher).to have_received(:new).with('http://config.server', 'poop', 'foo,bar', 'master', 'user', 'pass')
     end
   end
 end
