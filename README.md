@@ -34,10 +34,13 @@ If you want to request values that are not on the `master` branch, you can optio
 
 If this is not provided, Spring Cloud Config will return values from the `master` branch.
 
-You will also need to set your Rails environment and Rack environment, as these values are needed before Chemtrails is available.
+You will also need to set your Rails environment so that Chemtrails knows which profile to fetch properties for.
 
     RAILS_ENV={env}
-    RACK_ENV={env}
+    
+If you'd like to fetch properties from a different profile (or multiple profiles) use `CONFIG_SERVER_PROFILE_ACTIVE` to override. e.g.
+
+    CONFIG_SERVER_PROFILE_ACTIVE=staging,web,noclip,muted
     
 When your Rails app boots, it will fetch the configuration for the given environment from the config server and populate
 the ENV with the values it finds. It will use the application name and environment name to determine which set of values
