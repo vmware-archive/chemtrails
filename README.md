@@ -45,6 +45,14 @@ to fetch. For example, if the application is named `Sandwich` and is running in 
 the configuration from the endpoint `$CONFIG_SERVER_URL/sandwich/production`. With Spring Cloud Config, this corresponds
 to a property source named `sandwich-production.properties`.
 
+## Releasing a new version
+
+    gem build chemtrails.gemspec
+    gem push chemtrails-$VERSION.gem
+    
+Credentials are in lastpass
+    
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
