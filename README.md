@@ -48,6 +48,10 @@ to fetch. For example, if the application is named `Sandwich` and is running in 
 the configuration from the endpoint `$CONFIG_SERVER_URL/sandwich/production`. With Spring Cloud Config, this corresponds
 to a property source named `sandwich-production.properties`.
 
+## Disabling
+
+If you do not provide a CONFIG_SERVER_URL then Chemtrails will not try to fetch variables from a config server.
+
 ## Releasing a new version
 
     gem build chemtrails.gemspec

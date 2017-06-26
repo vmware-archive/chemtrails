@@ -13,8 +13,12 @@ module Chemtrails
       password = env['CONFIG_SERVER_PASSWORD']
       profiles = env.fetch('CONFIG_SERVER_PROFILE_ACTIVE', rails_env)
 
-      fetcher = Chemtrails::Fetcher.new(server, app_name, profiles, branch, username, password)
-      env.update(fetcher.fetch_configuration)
+      if server.present?
+        fetcher = Chemtrails::Fetcher.new(server, app_name, profiles, branch, username, password)
+        env.update(fetcher.fetch_configuration)
+      else
+        puts "No CONFIG_SERVER_URL provided, Chemtrails will not fetch environment variables"
+      end
     end
   end
 end

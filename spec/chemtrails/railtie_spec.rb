@@ -40,7 +40,9 @@ describe Chemtrails::Railtie do
     end
 
     it 'should update the environment with the configuration values' do
-      env = {}
+      env = {
+          'CONFIG_SERVER_URL' => 'pls.load.my.config.io'
+      }
       described_class.startup('app', 'env', env)
       expect(env.fetch('foo')).to eq('bar')
     end
@@ -70,6 +72,29 @@ describe Chemtrails::Railtie do
       )
 
       expect(Chemtrails::Fetcher).to have_received(:new).with('http://config.server', 'poop', 'foo,bar', 'master', 'user', 'pass')
+    end
+
+    it 'should not fetch configuration if CONFIG_SERVER_URL is nil or empty' do
+      described_class.startup( 'test', 'migration',
+                               {
+                                   'CONFIG_SERVER_URL' => '',
+                                   'CONFIG_SERVER_BRANCH' => 'master',
+                                   'CONFIG_SERVER_USERNAME' => 'user',
+                                   'CONFIG_SERVER_PASSWORD' => 'pass',
+                                   'CONFIG_SERVER_PROFILE_ACTIVE' => 'foo,bar'
+                               }
+      )
+
+      described_class.startup( 'test', 'migration',
+                               {
+                                   'CONFIG_SERVER_BRANCH' => 'master',
+                                   'CONFIG_SERVER_USERNAME' => 'user',
+                                   'CONFIG_SERVER_PASSWORD' => 'pass',
+                                   'CONFIG_SERVER_PROFILE_ACTIVE' => 'foo,bar'
+                               }
+      )
+
+      expect(Chemtrails::Fetcher).not_to have_received(:new)
     end
   end
 end
