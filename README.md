@@ -53,6 +53,7 @@ to a property source named `sandwich-production.properties`.
 If you do not provide a CONFIG_SERVER_URL then Chemtrails will not try to fetch variables from a config server.
 
 ## Releasing a new version
+Increase the version number in `lib/chemtrails/version.rb`
 
     gem build chemtrails.gemspec
     gem push chemtrails-$VERSION.gem
