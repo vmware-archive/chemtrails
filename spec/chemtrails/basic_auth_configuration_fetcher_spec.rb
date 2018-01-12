@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Chemtrails::Fetcher do
+describe Chemtrails::BasicAuthConfigurationFetcher do
+  subject { Chemtrails::BasicAuthConfigurationFetcher.new }
+
   describe '#fetch_configuration' do
     context 'when a branch name is provided' do
-      subject { Chemtrails::Fetcher.new }
-
       context 'when the fetch is successful' do
         before do
           stub_request(:get, 'http://example.com/foo/development/production').to_return(body: JSON.generate(
@@ -57,8 +57,6 @@ describe Chemtrails::Fetcher do
     end
 
     context 'when a branch name is not provided' do
-      subject { Chemtrails::Fetcher.new }
-
       before do
         stub_request(:get, 'http://example.com/foo/development').to_return(body: JSON.generate(
           propertySources: [

@@ -1,4 +1,4 @@
-require 'chemtrails/fetcher'
+require 'chemtrails/basic_auth_configuration_fetcher'
 
 module Chemtrails
   class Configurer

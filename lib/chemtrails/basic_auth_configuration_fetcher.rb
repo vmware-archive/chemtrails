@@ -2,7 +2,7 @@ require 'json'
 require 'excon'
 
 module Chemtrails
-  class Fetcher
+  class BasicAuthConfigurationFetcher
     def fetch_configuration(url, application, environment, branch, username, password)
       configuration_properties_url = build_url(url: url, application: application, environment: environment, branch: branch)
 
