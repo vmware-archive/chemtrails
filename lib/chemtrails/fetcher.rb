@@ -3,18 +3,11 @@ require 'excon'
 
 module Chemtrails
   class Fetcher
-    def initialize(url, application, environment, branch, username, password)
-      @url = url
-      @branch = branch
-      @application = application
-      @environment = environment
-      @username = username
-      @password = password
-    end
+    def fetch_configuration(url, application, environment, branch, username, password)
+      configuration_properties_url = build_url(url: url, application: application, environment: environment, branch: branch)
 
-    def fetch_configuration
-      response = Excon.get(build_url, headers: {
-        'Authorization' => "Basic #{encode_credentials(@username, @password)}"
+      response = Excon.get(configuration_properties_url, headers: {
+        'Authorization' => "Basic #{encode_credentials(username, password)}"
       })
 
       if success?(response)
@@ -24,7 +17,7 @@ module Chemtrails
           sources.each { |source| props.reverse_merge!(source['source']) }
         end
       else
-        raise RuntimeError.new("Error fetching configuration from: #{@url}")
+        raise RuntimeError.new("Error fetching configuration from: #{url}")
       end
     end
 
@@ -38,11 +31,11 @@ module Chemtrails
       Base64.encode64("#{username}:#{password}").chomp
     end
 
-    def build_url
-      if @branch.present?
-        "#{@url}/#{@application}/#{@environment}/#{@branch}"
+    def build_url(url:, application:, environment:, branch:)
+      if branch.present?
+        "#{url}/#{application}/#{environment}/#{branch}"
       else
-        "#{@url}/#{@application}/#{@environment}"
+        "#{url}/#{application}/#{environment}"
       end
     end
   end

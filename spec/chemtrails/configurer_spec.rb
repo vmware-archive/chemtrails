@@ -3,11 +3,7 @@ require 'spec_helper'
 describe Chemtrails::Configurer do
   describe '#configure' do
     let(:fetcher) {double(fetch_configuration: {'foo' => 'bar'})}
-    let(:configurer) {Chemtrails::Configurer.new}
-
-    before do
-      allow(Chemtrails::Fetcher).to receive(:new).and_return(fetcher)
-    end
+    let(:configurer) {Chemtrails::Configurer.new(fetcher: fetcher)}
 
     it 'should update the environment with the configuration values' do
       env = {
@@ -29,7 +25,7 @@ describe Chemtrails::Configurer do
                                }
       )
 
-      expect(Chemtrails::Fetcher).to have_received(:new).with('http://config.server', 'poop', 'staging', 'master', 'user', 'pass')
+      expect(fetcher).to have_received(:fetch_configuration).with('http://config.server', 'poop', 'staging', 'master', 'user', 'pass')
     end
 
     it 'should use CONFIG_SERVER_PROFILE_ACTIVE profiles instead of the Rails env if present' do
@@ -44,7 +40,7 @@ describe Chemtrails::Configurer do
                            }
       )
 
-      expect(Chemtrails::Fetcher).to have_received(:new).with('http://config.server', 'poop', 'foo,bar', 'master', 'user', 'pass')
+      expect(fetcher).to have_received(:fetch_configuration).with('http://config.server', 'poop', 'foo,bar', 'master', 'user', 'pass')
     end
 
     it 'should not fetch configuration if CONFIG_SERVER_URL is nil or empty' do
@@ -69,7 +65,7 @@ describe Chemtrails::Configurer do
                            }
       )
 
-      expect(Chemtrails::Fetcher).not_to have_received(:new)
+      expect(fetcher).not_to have_received(:fetch_configuration)
     end
   end
 end

@@ -8,7 +8,7 @@ module Chemtrails
     end
 
     def self.startup(app_name, rails_env, env)
-      Chemtrails::Configurer.new.configure(app_name: app_name, rails_env: rails_env, env: env)
+      Configurer.new(fetcher: Fetcher.new).configure(app_name: app_name, rails_env: rails_env, env: env)
     end
   end
 end

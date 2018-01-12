@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Chemtrails::Fetcher do
   describe '#fetch_configuration' do
     context 'when a branch name is provided' do
-      subject { Chemtrails::Fetcher.new('http://example.com', 'foo', 'development', 'production', 'username', 'password') }
+      subject { Chemtrails::Fetcher.new }
 
       context 'when the fetch is successful' do
         before do
@@ -28,17 +28,17 @@ describe Chemtrails::Fetcher do
 
         it 'should fetch configuration from the config server with basic auth' do
           credentials = get_basic_auth_credentials(username: 'username', password: 'password')
-          subject.fetch_configuration
+          subject.fetch_configuration('http://example.com', 'foo', 'development', 'production', 'username', 'password')
           expect(WebMock).to have_requested(:get, 'http://example.com/foo/development/production').with(headers: {'Authorization' => "Basic #{credentials}"})
         end
 
         it 'should return the configuration values' do
-          values = subject.fetch_configuration
+          values = subject.fetch_configuration('http://example.com', 'foo', 'development', 'production', 'username', 'password')
           expect(values['SOME_SETTING_2']).to eq('baz')
         end
 
         it 'should override values with more specific values' do
-          values = subject.fetch_configuration
+          values = subject.fetch_configuration('http://example.com', 'foo', 'development', 'production', 'username', 'password')
           expect(values['SOME_SETTING_1']).to eq('foo')
         end
       end
@@ -50,14 +50,14 @@ describe Chemtrails::Fetcher do
 
         it 'should raise a RuntimeError' do
           expect {
-            subject.fetch_configuration
+            subject.fetch_configuration('http://example.com', 'foo', 'development', 'production', 'username', 'password')
           }.to raise_error(RuntimeError)
         end
       end
     end
 
     context 'when a branch name is not provided' do
-      subject { Chemtrails::Fetcher.new('http://example.com', 'foo', 'development', nil, 'username', 'password') }
+      subject { Chemtrails::Fetcher.new }
 
       before do
         stub_request(:get, 'http://example.com/foo/development').to_return(body: JSON.generate(
@@ -81,7 +81,7 @@ describe Chemtrails::Fetcher do
 
       it 'should fetch configuration from the config server with basic auth' do
         credentials = get_basic_auth_credentials(username: 'username', password: 'password')
-        subject.fetch_configuration
+        subject.fetch_configuration('http://example.com', 'foo', 'development', nil, 'username', 'password')
         expect(WebMock).to have_requested(:get, 'http://example.com/foo/development').with(headers: {'Authorization' => "Basic #{credentials}"})
       end
     end
