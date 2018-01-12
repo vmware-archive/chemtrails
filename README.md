@@ -22,12 +22,18 @@ Or install it yourself as:
 
 ## Configuration
 
-Set the location and of your config server and any necessary credentials in the environment:
+To use your own config server, set the location and of your config server and any necessary credentials in the environment:
 
     CONFIG_SERVER_URL=http://localhost:8080
     CONFIG_SERVER_USERNAME=username
     CONFIG_SERVER_PASSWORD=password
     
+To use a Config Server service on PWS, set:
+
+    USE_P_CONFIG_SERVER_SERVICE=true
+    
+The rest of the configuration is the same regardless of what type of server you are using.
+
 If you want to request values that are not on the `master` branch, you can optionally supply the branch name:
 
     CONFIG_SERVER_BRANCH=production
@@ -59,7 +65,6 @@ Increase the version number in `lib/chemtrails/version.rb`
     gem push chemtrails-$VERSION.gem
     
 Credentials are in lastpass
-    
 
 ## License
 
