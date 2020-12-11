@@ -15,7 +15,18 @@ module Chemtrails
 
       if use_p_config_server_service == 'true'
         vcap_services = env.fetch('VCAP_SERVICES') {fail('USE_P_CONFIG_SERVER_SERVICE=true but no VCAP_SERVICES variable is present. Are you running on a CF?')}
-        config_server_services_json = JSON.parse(vcap_services).fetch('p-config-server') {fail('USE_P_CONFIG_SERVER_SERVICE=true but no p-config-server in VCAP_SERVICES. Have you bound the service?')}
+        has_config_server_v1 = true
+        has_config_server_v2 = true
+        config_server_services_json = JSON.parse(vcap_services).fetch('p-config-server') { has_config_server_v1 = false }
+
+        if !has_config_server_v1
+          config_server_services_json = JSON.parse(vcap_services).fetch('p.config-server') { has_config_server_v2 = false }
+        end
+
+        if !(has_config_server_v1 || has_config_server_v2)
+          fail('USE_P_CONFIG_SERVER_SERVICE=true but no p-config-server in VCAP_SERVICES. Have you bound the service?')
+        end
+
         config_server_service_json = config_server_services_json.first
 
         env_vars_from_config_server = @oauth_configuration_fetcher.fetch_configuration(

@@ -12,7 +12,7 @@ describe Chemtrails::Configurer do
       )
     }
 
-    context 'when USE_P_CONFIG_SERVER_SERVICE is true' do
+    context 'when USE_P_CONFIG_SERVER_SERVICE is true and using p-config-server' do
       it 'should use an OAuthConfigurationFetcher' do
         vcap_services = {
             'p-config-server': [
@@ -54,6 +54,91 @@ describe Chemtrails::Configurer do
                                  'VCAP_SERVICES' => vcap_services.to_json,
                                  'new_configuration' => 'values'
                              })
+      end
+
+      it 'spring profiles active stuff' do
+
+      end
+    end
+
+    context 'when USE_P_CONFIG_SERVER_SERVICE is true and using p.config-server' do
+      it 'should use an OAuthConfigurationFetcher' do
+        vcap_services = {
+            'p.config-server': [
+                {
+                    'credentials': {
+                        'uri': 'http://config.server.url',
+                        'client_secret': 'secret',
+                        'client_id': 'id',
+                        'access_token_uri': 'http://config.server.access.token.url'
+                    }
+                }
+            ]
+        }
+
+        allow(oauth_fetcher).to receive(:fetch_configuration)
+                                    .with(
+                                        app_name: 'test',
+                                        branch: 'branch',
+                                        profiles: 'migration',
+                                        config_server_url: 'http://config.server.url',
+                                        access_token_url: 'http://config.server.access.token.url',
+                                        client_id: 'id',
+                                        client_secret: 'secret'
+                                    )
+                                    .and_return({'new_configuration' => 'values'})
+
+
+        env = {
+            'USE_P_CONFIG_SERVER_SERVICE' => 'true',
+            'CONFIG_SERVER_BRANCH' => 'branch',
+            'VCAP_SERVICES' => vcap_services.to_json
+        }
+
+        configurer.configure(app_name: 'test', rails_env: 'migration', env: env)
+
+        expect(env).to eq({
+                              'USE_P_CONFIG_SERVER_SERVICE' => 'true',
+                              'CONFIG_SERVER_BRANCH' => 'branch',
+                              'VCAP_SERVICES' => vcap_services.to_json,
+                              'new_configuration' => 'values'
+                          })
+      end
+
+      it 'spring profiles active stuff' do
+
+      end
+    end
+
+    context 'when USE_P_CONFIG_SERVER_SERVICE is true and no config server' do
+      it 'should use an OAuthConfigurationFetcher' do
+        vcap_services = {
+
+        }
+
+        allow(oauth_fetcher).to receive(:fetch_configuration)
+                                    .with(
+                                        app_name: 'test',
+                                        branch: 'branch',
+                                        profiles: 'migration',
+                                        config_server_url: 'http://config.server.url',
+                                        access_token_url: 'http://config.server.access.token.url',
+                                        client_id: 'id',
+                                        client_secret: 'secret'
+                                    )
+                                    .and_return({'new_configuration' => 'values'})
+
+
+        env = {
+            'USE_P_CONFIG_SERVER_SERVICE' => 'true',
+            'CONFIG_SERVER_BRANCH' => 'branch',
+            'VCAP_SERVICES' => vcap_services.to_json
+        }
+
+        expect {
+        configurer.configure(app_name: 'test', rails_env: 'migration', env: env)
+        }.to raise_error(RuntimeError)
+
       end
 
       it 'spring profiles active stuff' do
